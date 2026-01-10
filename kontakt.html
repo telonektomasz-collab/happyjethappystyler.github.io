@@ -25,6 +25,36 @@
   <p>Email: <a href="mailto:happyjet.happyness@gmail.com">happyjet.happyness@gmail.com</a></p>
   <p>Telefon: +48 792 145 950</p>
 </main>
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $to = "happyjet.happyness@gmail.com";
+    $subject = "Nowa wiadomość z formularza kontaktowego";
+
+    $name = htmlspecialchars(trim($_POST["name"]));
+    $email = htmlspecialchars(trim($_POST["email"]));
+    $phone = htmlspecialchars(trim($_POST["phone"]));
+    $message = htmlspecialchars(trim($_POST["message"]));
+
+    if (empty($name) || empty($email)) {
+        echo "Uzupełnij wymagane pola.";
+        exit;
+    }
+
+    $content = "Imię: $name\n";
+    $content .= "E-mail: $email\n";
+    $content .= "Telefon: $phone\n\n";
+    $content .= "Wiadomość:\n$message\n";
+
+    $headers = "From: $name <$email>";
+
+    if (mail($to, $subject, $content, $headers)) {
+        echo "Dziękujemy! Wiadomość została wysłana.";
+    } else {
+        echo "Błąd podczas wysyłania wiadomości.";
+    }
+}
+?>
 
 <footer>© 2026 Happyjet Happystyler</footer>
 </body>
